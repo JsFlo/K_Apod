@@ -45,4 +45,15 @@ dependencies {
     // Dagger 2
     compile "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    // Room db
+    compile "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
+    compile "android.arch.persistence.room:rxjava2:$room_version"
+
+    // LiveData<>, ViewModels!
+    compile "android.arch.lifecycle:runtime:$room_version"
+    compile "android.arch.lifecycle:extensions:$room_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$room_version"
 }
