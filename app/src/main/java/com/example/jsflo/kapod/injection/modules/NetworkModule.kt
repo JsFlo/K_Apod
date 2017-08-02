@@ -13,9 +13,15 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
-class NetworkModule() {
+class NetworkModule {
     private val BASE_URL = "https://api.nasa.gov/"
 
+
+    @Provides
+    @Singleton
+    fun provideApiKey(): String {
+        //TODO("API KEY!")
+    }
 
     @Provides
     @Singleton

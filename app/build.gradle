@@ -24,14 +24,20 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation ('com.android.support.test.espresso:espresso-core:3.0.0', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:26.0.0'
     testImplementation 'junit:junit:4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'com.android.support:recyclerview-v7:25.4.0'
+    implementation 'com.android.support:design:25.4.0'
+    implementation 'com.android.support:percent:25.4.0'
+
+    // Image loading and cache
+    implementation 'com.github.bumptech.glide:glide:4.0.0-RC1'
 
     // Rx
     implementation 'io.reactivex.rxjava2:rxkotlin:2.1.0'
@@ -41,10 +47,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.2.0"
     implementation "com.squareup.retrofit2:converter-moshi:2.0.0"
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-
-    // Dagger 2
-    compile "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     // Room db
     compile "android.arch.persistence.room:runtime:$room_version"
@@ -56,4 +58,12 @@ dependencies {
     compile "android.arch.lifecycle:runtime:$room_version"
     compile "android.arch.lifecycle:extensions:$room_version"
     annotationProcessor "android.arch.lifecycle:compiler:$room_version"
+
+    // Dagger 2
+    compile "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+}
+kapt {
+    generateStubs = true
 }
