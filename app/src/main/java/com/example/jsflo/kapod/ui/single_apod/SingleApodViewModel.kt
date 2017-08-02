@@ -1,4 +1,4 @@
-package com.example.jsflo.kapod.ui
+package com.example.jsflo.kapod.ui.single_apod
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

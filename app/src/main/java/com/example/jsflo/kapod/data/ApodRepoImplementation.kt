@@ -1,16 +1,18 @@
 package com.example.jsflo.kapod.data
 
-import com.example.jsflo.kapod.utils.toJsonRequestFormat
-import com.example.jsflo.kapod.utils.toStartOfDay
+import android.arch.lifecycle.LiveData
 import com.example.jsflo.kapod.data.database.ApodDatabase
 import com.example.jsflo.kapod.data.network.ApodService
 import com.example.jsflo.kapod.entity.Apod
+import com.example.jsflo.kapod.utils.DateRange
+import com.example.jsflo.kapod.utils.toJsonRequestFormat
+import com.example.jsflo.kapod.utils.toStartOfDay
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class MyApodRepo(val apodDatabase: ApodDatabase, val apodApiService: ApodService) : ApodRepo {
+class ApodRepoImplementation(val apodDatabase: ApodDatabase, val apodApiService: ApodService) : ApodRepo {
 
     private fun addApod(apod: Apod) {
         apodDatabase.apodDao().addApod(apod)
@@ -25,5 +27,23 @@ class MyApodRepo(val apodDatabase: ApodDatabase, val apodApiService: ApodService
                     apodApiService.getApod(date = date.toJsonRequestFormat())
                             .doOnSuccess { addApod(it) }
                 }
+    }
+
+    override fun getApods(): LiveData<List<Apod>> {
+        return apodDatabase.apodDao().getApods()
+    }
+
+    override fun getApods(dateRange: DateRange): LiveData<List<Apod>> {
+        Observable.just(dateRange)
+                .subscribeOn(Schedulers.io())
+                .flatMap { Observable.fromIterable(it) }
+                .map {
+                    // todo: fix this
+                    getApod(it)
+                            .subscribe()
+                }
+                .subscribe()
+
+        return getApods()
     }
 }

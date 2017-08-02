@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SingleApodActivity">
+        <activity android:name=".ui.single_apod.SingleApodActivity">
+        </activity>
+        <activity android:name=".ui.multi_apod.MultiApodActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

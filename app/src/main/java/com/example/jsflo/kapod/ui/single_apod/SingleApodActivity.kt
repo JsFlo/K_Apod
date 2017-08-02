@@ -1,9 +1,10 @@
-package com.example.jsflo.kapod.ui
+package com.example.jsflo.kapod.ui.single_apod
 
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.app.AppCompatActivity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.example.jsflo.kapod.ApodApplication
 import com.example.jsflo.kapod.R
@@ -15,13 +16,22 @@ import kotlinx.android.synthetic.main.view_apod_text.*
 import java.util.*
 
 class SingleApodActivity : LifecycleActivity() {
+    companion object {
+        val EXTRA_DATE = "EXTRA_DATE"
+        fun newIntent(context: Context, date: Date): Intent {
+            return Intent(context, SingleApodActivity::class.java)
+                    .putExtra(EXTRA_DATE, date)
+        }
+    }
+
     lateinit var mDate: Date
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.single_apod_activity)
 
-        mDate = Date()
+        val bundle: Bundle? = savedInstanceState ?: intent.extras
+        mDate = (bundle?.get(EXTRA_DATE) ?: Date()) as Date
 
         val application = application as ApodApplication
         val viewModel = ViewModelProviders.of(this)
