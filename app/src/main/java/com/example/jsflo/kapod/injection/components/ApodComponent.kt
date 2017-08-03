@@ -17,4 +17,9 @@ interface ApodComponent {
 
     fun inject(singleApodViewModel: SingleApodViewModel)
     fun inject(multiApodViewModel: MultiApodViewModel)
+
+    // View models will use this to inject themselves into the component
+    interface Injectable {
+        fun inject(apodComponent: ApodComponent)
+    }
 }

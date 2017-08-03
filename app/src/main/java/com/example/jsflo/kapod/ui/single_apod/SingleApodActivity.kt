@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.example.jsflo.kapod.ApodApplication
 import com.example.jsflo.kapod.R
+import com.example.jsflo.kapod.injection.ApodViewModelFactory
 import com.example.jsflo.kapod.utils.loadImg
 import com.example.jsflo.kapod.utils.setTextOrHide
 import com.example.jsflo.kapod.utils.toPrettyFormat
@@ -33,11 +34,8 @@ class SingleApodActivity : LifecycleActivity() {
         val bundle: Bundle? = savedInstanceState ?: intent.extras
         mDate = (bundle?.get(EXTRA_DATE) ?: Date()) as Date
 
-        val application = application as ApodApplication
-        val viewModel = ViewModelProviders.of(this)
+        val viewModel = ViewModelProviders.of(this, ApodViewModelFactory(application as ApodApplication))
                 .get(SingleApodViewModel::class.java)
-
-        application.apodComponent.inject(viewModel)
         viewModel.getApod(mDate).observe(this, Observer {
             it?.let {
                 hero_image.loadImg(it.url)

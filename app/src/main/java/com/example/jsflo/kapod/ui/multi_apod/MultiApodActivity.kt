@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.example.jsflo.kapod.ApodApplication
 import com.example.jsflo.kapod.R
 import com.example.jsflo.kapod.entity.Apod
+import com.example.jsflo.kapod.injection.ApodViewModelFactory
 import com.example.jsflo.kapod.ui.single_apod.SingleApodActivity
 import com.example.jsflo.kapod.utils.*
 import kotlinx.android.synthetic.main.activity_multi_apod.*
@@ -23,10 +24,8 @@ class MultiApodActivity : LifecycleActivity(), MultiApodAdapter.MultiApodListene
         multi_apod_recycler_view.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         multi_apod_recycler_view.adapter = adapter
 
-        val application = application as ApodApplication
-        val viewModel = ViewModelProviders.of(this)
+        val viewModel = ViewModelProviders.of(this, ApodViewModelFactory(application as ApodApplication))
                 .get(MultiApodViewModel::class.java)
-        application.apodComponent.inject(viewModel)
         val today = Date().toStartOfDay()
         viewModel.getApods(DateRange((today - TimeInterval.DAY * 20), today)).observe(this, android.arch.lifecycle.Observer {
             it?.let {
