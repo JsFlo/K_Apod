@@ -2,20 +2,16 @@ package com.example.jsflo.kapod.data.database;
 
 import android.arch.persistence.room.TypeConverter;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
 
 public class ApodDbConverter {
     @TypeConverter
-    public static Date fromTimestamp(Long value) {
-        if (value == null) {
-            return null;
-        } else {
-            return new Date(value);
-        }
+    public static LocalDate fromTimeStamp(Long value) {
+        return new LocalDate(value);
     }
 
     @TypeConverter
-    public static Long dateToTimestamp(Date date) {
-        return date.getTime();
+    public static Long localDateToTimestamp(LocalDate localDate) {
+        return localDate.toDateTimeAtStartOfDay().getMillis();
     }
 }

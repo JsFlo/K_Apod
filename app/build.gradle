@@ -63,6 +63,8 @@ dependencies {
     compile "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
+    // Joda-Time for LocalDate
+    compile 'net.danlew:android.joda:2.9.9'
 }
 kapt {
     generateStubs = true

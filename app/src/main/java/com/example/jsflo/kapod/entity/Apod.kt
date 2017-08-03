@@ -2,10 +2,10 @@ package com.example.jsflo.kapod.entity
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import java.util.Date
+import org.joda.time.LocalDate
 
 @Entity
-data class Apod(@PrimaryKey var date: Date = Date(), var title: String = "",
+data class Apod(@PrimaryKey var date: LocalDate = LocalDate.now(), var title: String = "",
                 var url: String = "", var explanation: String = "",
                 var hdurl: String? = null,
                 var media_type: String = "",

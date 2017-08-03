@@ -1,6 +1,7 @@
 package com.example.jsflo.kapod.data
 
 import android.arch.lifecycle.LiveData
+import android.util.Log
 import com.example.jsflo.kapod.data.database.ApodDatabase
 import com.example.jsflo.kapod.data.network.ApodService
 import com.example.jsflo.kapod.entity.Apod
@@ -9,7 +10,7 @@ import com.example.jsflo.kapod.utils.toJsonRequestFormat
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import java.util.*
+import org.joda.time.LocalDate
 
 class ApodRepoImplementation(val apodDatabase: ApodDatabase, val apodApiService: ApodService) : ApodRepo {
 
@@ -17,7 +18,7 @@ class ApodRepoImplementation(val apodDatabase: ApodDatabase, val apodApiService:
         apodDatabase.apodDao().addApod(apod)
     }
 
-    override fun getApod(date: Date): Single<Apod> {
+    override fun getApod(date: LocalDate): Single<Apod> {
         return getApodFromDb(date)
                 .flatMap {
                     if (it.isValid()) {
@@ -43,13 +44,13 @@ class ApodRepoImplementation(val apodDatabase: ApodDatabase, val apodApiService:
         return getApods()
     }
 
-    private fun getApodFromDb(date: Date): Single<Apod> {
+    private fun getApodFromDb(date: LocalDate): Single<Apod> {
         return Observable.fromCallable { apodDatabase.apodDao().getApod(date) ?: ApodRepo.APOD_NOT_FOUND }
                 .subscribeOn(Schedulers.io())
                 .single(ApodRepo.APOD_NOT_FOUND)
     }
 
-    private fun getApodFromNetwork(date: Date): Single<Apod> {
+    private fun getApodFromNetwork(date: LocalDate): Single<Apod> {
         return apodApiService.getApod(date = date.toJsonRequestFormat())
                 .onErrorResumeNext { Single.just(ApodRepo.APOD_NOT_FOUND) }
                 .doOnSuccess { if (it.isValid()) addApod(it) }

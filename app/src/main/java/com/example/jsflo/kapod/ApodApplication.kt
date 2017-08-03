@@ -3,6 +3,7 @@ package com.example.jsflo.kapod
 import android.app.Application
 import com.example.jsflo.kapod.injection.components.*
 import com.example.jsflo.kapod.injection.modules.AppModule
+import net.danlew.android.joda.JodaTimeAndroid
 
 class ApodApplication : Application() {
     val apodComponent: ApodComponent by lazy {
@@ -11,4 +12,8 @@ class ApodApplication : Application() {
                 .build()
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        JodaTimeAndroid.init(this)
+    }
 }

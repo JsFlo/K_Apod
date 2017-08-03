@@ -8,17 +8,17 @@ import com.example.jsflo.kapod.data.isValid
 import com.example.jsflo.kapod.entity.Apod
 import com.example.jsflo.kapod.injection.components.ApodComponent
 import io.reactivex.schedulers.Schedulers
-import java.util.*
+import org.joda.time.LocalDate
 import javax.inject.Inject
 
 class SingleApodViewModel : ViewModel(), ApodComponent.Injectable {
 
     @Inject
     lateinit var mRepo: ApodRepo
-    val mToday = Date()
+    val mToday = LocalDate()
     val mApod: MutableLiveData<Apod?> = MutableLiveData()
 
-    fun getApod(date: Date = mToday): LiveData<Apod?> {
+    fun getApod(date: LocalDate = mToday): LiveData<Apod?> {
         if (mApod.value == null) {
             getApodFromRepo(date)
         }
@@ -26,7 +26,7 @@ class SingleApodViewModel : ViewModel(), ApodComponent.Injectable {
         return mApod
     }
 
-    private fun getApodFromRepo(date: Date) {
+    private fun getApodFromRepo(date: LocalDate) {
         mRepo.getApod(date)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { if (it.isValid()) mApod.postValue(it) }

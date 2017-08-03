@@ -6,7 +6,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.example.jsflo.kapod.entity.Apod
-import java.util.Date
+import org.joda.time.LocalDate
 
 @Dao
 interface ApodDao {
@@ -20,7 +20,7 @@ interface ApodDao {
 
     // TODO: arg0 is a hack because room + kotlin aren't getting along
     @Query("SELECT * FROM $TABLE_APOD where $DATE = :arg0")
-    fun getApod(date: Date): Apod
+    fun getApod(date: LocalDate): Apod
 
     @Query("SELECT * FROM apod")
     fun getApods(): LiveData<List<Apod>>
