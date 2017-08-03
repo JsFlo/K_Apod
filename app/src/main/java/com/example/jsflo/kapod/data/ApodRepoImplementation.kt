@@ -6,7 +6,6 @@ import com.example.jsflo.kapod.data.network.ApodService
 import com.example.jsflo.kapod.entity.Apod
 import com.example.jsflo.kapod.utils.DateRange
 import com.example.jsflo.kapod.utils.toJsonRequestFormat
-import com.example.jsflo.kapod.utils.toStartOfDay
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -18,16 +17,17 @@ class ApodRepoImplementation(val apodDatabase: ApodDatabase, val apodApiService:
         apodDatabase.apodDao().addApod(apod)
     }
 
-    // check if we have the apod in the database otherwise (onErrorResumeNext) make an api call
     override fun getApod(date: Date): Single<Apod> {
-        return Observable.fromCallable { apodDatabase.apodDao().getApod(date.toStartOfDay()) }
-                .subscribeOn(Schedulers.io())
-                .singleOrError()
-                .onErrorResumeNext {
-                    apodApiService.getApod(date = date.toJsonRequestFormat())
-                            .doOnSuccess { addApod(it) }
+        return getApodFromDb(date)
+                .flatMap {
+                    if (it.isValid()) {
+                        Single.just(it)
+                    } else {
+                        getApodFromNetwork(date)
+                    }
                 }
     }
+
 
     override fun getApods(): LiveData<List<Apod>> {
         return apodDatabase.apodDao().getApods()
@@ -37,13 +37,21 @@ class ApodRepoImplementation(val apodDatabase: ApodDatabase, val apodApiService:
         Observable.just(dateRange)
                 .subscribeOn(Schedulers.io())
                 .flatMap { Observable.fromIterable(it) }
-                .map {
-                    // todo: fix this
-                    getApod(it)
-                            .subscribe()
-                }
+                .map { getApod(it).subscribe() }
                 .subscribe()
 
         return getApods()
+    }
+
+    private fun getApodFromDb(date: Date): Single<Apod> {
+        return Observable.fromCallable { apodDatabase.apodDao().getApod(date) ?: ApodRepo.APOD_NOT_FOUND }
+                .subscribeOn(Schedulers.io())
+                .single(ApodRepo.APOD_NOT_FOUND)
+    }
+
+    private fun getApodFromNetwork(date: Date): Single<Apod> {
+        return apodApiService.getApod(date = date.toJsonRequestFormat())
+                .onErrorResumeNext { Single.just(ApodRepo.APOD_NOT_FOUND) }
+                .doOnSuccess { if (it.isValid()) addApod(it) }
     }
 }

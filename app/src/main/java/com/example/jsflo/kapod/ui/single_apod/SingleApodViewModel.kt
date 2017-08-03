@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.jsflo.kapod.data.ApodRepo
+import com.example.jsflo.kapod.data.isValid
 import com.example.jsflo.kapod.entity.Apod
 import com.example.jsflo.kapod.injection.components.ApodComponent
 import io.reactivex.schedulers.Schedulers
@@ -28,7 +29,7 @@ class SingleApodViewModel : ViewModel(), ApodComponent.Injectable {
     private fun getApodFromRepo(date: Date) {
         mRepo.getApod(date)
                 .subscribeOn(Schedulers.io())
-                .doOnSuccess { mApod.postValue(it) }
+                .doOnSuccess { if (it.isValid()) mApod.postValue(it) }
                 .doOnError { mApod.postValue(null) }
                 .subscribe()
     }

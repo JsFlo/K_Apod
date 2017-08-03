@@ -10,4 +10,11 @@ interface ApodRepo {
     fun getApod(date: Date): Single<Apod>
     fun getApods(dateRange: DateRange): LiveData<List<Apod>>
     fun getApods(): LiveData<List<Apod>>
+
+    // static sentinel because Single doesn't allow nulls
+    companion object {
+        val APOD_NOT_FOUND: Apod = Apod()
+    }
 }
+// I may bring in Guava to use Optional because this feels wrong
+fun Apod.isValid(): Boolean = this != ApodRepo.APOD_NOT_FOUND
