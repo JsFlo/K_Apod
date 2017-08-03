@@ -2,6 +2,7 @@ package com.example.jsflo.kapod.ui.multi_apod
 
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.example.jsflo.kapod.ApodApplication
@@ -27,7 +28,7 @@ class MultiApodActivity : LifecycleActivity(), MultiApodAdapter.MultiApodListene
         val viewModel = ViewModelProviders.of(this, ApodViewModelFactory(application as ApodApplication))
                 .get(MultiApodViewModel::class.java)
         val today = Date().toStartOfDay()
-        viewModel.getApods(DateRange((today - TimeInterval.DAY * 20), today)).observe(this, android.arch.lifecycle.Observer {
+        viewModel.getApods(DateRange((today.subtractDays(20)), today)).observe(this, Observer {
             it?.let {
                 adapter.swapItems(it)
             }

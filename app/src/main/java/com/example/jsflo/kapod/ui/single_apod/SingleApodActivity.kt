@@ -12,6 +12,7 @@ import com.example.jsflo.kapod.injection.ApodViewModelFactory
 import com.example.jsflo.kapod.utils.loadImg
 import com.example.jsflo.kapod.utils.setTextOrHide
 import com.example.jsflo.kapod.utils.toPrettyFormat
+import com.example.jsflo.kapod.utils.toStartOfDay
 import kotlinx.android.synthetic.main.single_apod_activity.*
 import kotlinx.android.synthetic.main.view_apod_text.*
 import java.util.*
@@ -36,7 +37,7 @@ class SingleApodActivity : LifecycleActivity() {
 
         val viewModel = ViewModelProviders.of(this, ApodViewModelFactory(application as ApodApplication))
                 .get(SingleApodViewModel::class.java)
-        viewModel.getApod(mDate).observe(this, Observer {
+        viewModel.getApod(mDate.toStartOfDay()).observe(this, Observer {
             it?.let {
                 hero_image.loadImg(it.url)
                 apod_title.text = it.title
