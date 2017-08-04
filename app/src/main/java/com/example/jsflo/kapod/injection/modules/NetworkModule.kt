@@ -20,7 +20,9 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideApiKey(): String {
-        TODO("api_key")
+        // Demo Api Key, get your own "if you will be intensively using the APIs"
+        // https://api.nasa.gov/index.html#getting-started
+        return "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"
     }
 
     @Provides

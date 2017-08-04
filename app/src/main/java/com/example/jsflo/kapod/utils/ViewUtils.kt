@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.example.jsflo.kapod.R
+import com.squareup.picasso.Picasso
 
 
 fun View.show() = { visibility = View.VISIBLE }
@@ -16,9 +16,9 @@ fun Array<out View>.hide() = this.map { it.hide() }
 
 fun ImageView.loadImg(imageUrl: String, placeholderDrawableRes: Int = R.mipmap.ic_launcher) {
     if (TextUtils.isEmpty(imageUrl)) {
-        Glide.with(context).load(placeholderDrawableRes).into(this)
+        Picasso.with(context).load(placeholderDrawableRes).into(this)
     } else {
-        Glide.with(context).load(imageUrl).into(this)
+        Picasso.with(context).load(imageUrl).into(this)
     }
 }
 
