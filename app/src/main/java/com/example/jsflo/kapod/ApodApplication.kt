@@ -1,7 +1,8 @@
 package com.example.jsflo.kapod
 
 import android.app.Application
-import com.example.jsflo.kapod.injection.components.*
+import com.example.jsflo.kapod.injection.components.ApodComponent
+import com.example.jsflo.kapod.injection.components.DaggerApodComponent
 import com.example.jsflo.kapod.injection.modules.AppModule
 import net.danlew.android.joda.JodaTimeAndroid
 

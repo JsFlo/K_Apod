@@ -13,12 +13,6 @@ class MultiApodViewModel : ViewModel(), ApodComponent.Injectable {
     @Inject
     lateinit var mRepo: ApodRepo
 
-    val mApods: LiveData<List<Apod>> by lazy {
-        mRepo.getApods()
-    }
-
-    fun getApods(): LiveData<List<Apod>> = mApods
-
     fun getApods(dateRange: DateRange): LiveData<List<Apod>> {
         return mRepo.getApods(dateRange)
     }
