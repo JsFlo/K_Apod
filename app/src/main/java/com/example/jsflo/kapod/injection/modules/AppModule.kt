@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class AppModule(application: Application) {
 
     val mApplication = application
-    val notUsed = 3
+    val notUsed = 4
 
     @Provides
     @Singleton
